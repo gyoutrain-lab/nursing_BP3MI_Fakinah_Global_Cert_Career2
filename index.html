@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Nursing Career Track & Credentialing Simulator: Saudi Arabia & GCC Pathway</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+        @keyframes pulse-gold { 0%, 100% { border-color: #f59e0b; } 50% { border-color: #fbbf24; } }
+        .border-pulse-gold { animation: pulse-gold 2.5s infinite; }
+        @media print {
+            body * { visibility: hidden; }
+            #printable-certificate, #printable-certificate * { visibility: visible; }
+            #printable-certificate { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col selection:bg-teal-500 selection:text-white">
+
+    <!-- Sound Audio Engine Controller -->
+    <script>
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+            }
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playExciting() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                // High triad fanfare (C5 -> E5 -> G5 -> C6)
+                const freqs = [523.25, 659.25, 783.99, 1046.50];
+                freqs.forEach((f, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(f, now + idx * 0.07);
+                    gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.07);
+                    osc.stop(now + idx * 0.07 + 0.35);
+                });
+            }
+            playBam() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                // Low-frequency impact thump (-100 penalty)
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.exponentialRampToValueAtTime(30, now + 0.38);
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.38);
+            }
+        }
+        const audioFx = new SoundEngine();
+    </script>
+
+    <!-- Top Navigation & Live Metric Header -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg">
+                    <i class="fa-solid fa-user-nurse"></i>
+                </div>
+                <div>
+                    <h1 class="text-base md:text-lg font-extrabold text-white tracking-wide flex items-center gap-2">
+                        Saudi & GCC Career Track Simulator
+                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-teal-950 text-teal-300 border border-teal-800">GLOBAL 2026</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Nurse Evolution Model: Credentialing & Senior Track Simulation</p>
+                </div>
+            </div>
+
+            <!-- User Badge & Audio Toggle -->
+            <div class="flex items-center space-x-3 text-xs md:text-sm">
+                <div id="player-badge" class="bg-slate-950 border border-slate-800 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-id-badge text-teal-400"></i>
+                    <span id="header-user-name" class="font-semibold text-slate-200">Candidate Nurse</span>
+                </div>
+                <button onclick="toggleAudio()" id="btn-audio-toggle" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-teal-400 border border-slate-700 transition" title="Toggle Sound Engine">
+                    <i id="audio-icon" class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Global Progress & Live Performance Header Bar -->
+    <section class="bg-slate-950 border-b border-slate-800 px-4 py-3">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-xs text-slate-400 block font-medium">Accumulated Score</span>
+                <span id="live-score-val" class="text-xl md:text-2xl font-black text-amber-400">0</span>
+                <span class="text-[10px] text-slate-500 block">/ 5,000 Pts Max</span>
+            </div>
+            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-xs text-slate-400 block font-medium">Senior Track Match</span>
+                <span id="live-match-pct" class="text-xl md:text-2xl font-black text-teal-400">0%</span>
+                <span class="text-[10px] text-slate-500 block">Senior Alignment %</span>
+            </div>
+            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-xs text-slate-400 block font-medium">Evolution Stage</span>
+                <span id="live-phase-title" class="text-xs md:text-sm font-bold text-emerald-400 truncate block mt-1">Phase 1: Adaptation</span>
+                <span class="text-[10px] text-slate-500 block">Career Year Horizon</span>
+            </div>
+            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-xs text-slate-400 block font-medium">Scenario Progress</span>
+                <span id="live-progress-num" class="text-xl md:text-2xl font-black text-indigo-400">1 / 50</span>
+                <span class="text-[10px] text-slate-500 block">Clinical & Career Decisions</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- Left Column: Case Scenarios & Gameplay Dashboard (3 Cols) -->
+        <div class="lg:col-span-3 space-y-6">
+
+            <!-- SCREEN 1: ONBOARDING & TARGET SETTING -->
+            <div id="screen-setup" class="bg-slate-900 rounded-2xl shadow-2xl p-6 md:p-8 border border-slate-800 relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-xl mx-auto space-y-5">
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 bg-gradient-to-tr from-teal-500 to-emerald-400 text-slate-950 rounded-2xl flex items-center justify-center mx-auto text-3xl font-black shadow-lg">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black text-white">Saudi & GCC Career Track Simulator</h2>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Test your decision-making across <span class="text-teal-400 font-semibold">50 real-world clinical & leadership scenarios</span> based on the proven track record of senior Indonesian nurses in Saudi Arabia & Kuwait.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3 text-xs text-slate-300">
+                        <div class="flex items-center gap-2 text-teal-300 font-bold">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>Scoring & Gamification Mechanics:</span>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1.5 text-slate-400">
+                            <li><strong class="text-emerald-400">Senior Alignment (+100 Pts):</strong> Triggers triumph chime audio & adds 100 points to your score.</li>
+                            <li><strong class="text-rose-400">Senior Deviation (-100 Pts):</strong> Triggers a low-frequency "BAM" impact sound & deducts 100 points.</li>
+                            <li><strong class="text-amber-400">Balanced Options:</strong> Options A, B, C, and D are randomly distributed and equalized in length to challenge critical thinking.</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">Registered Nurse Name</label>
+                            <input type="text" id="input-nurse-name" placeholder="e.g., Ns. Giyono Asfarrasyid, S.Kep." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">Target Milestone Role (Year 7+ Goal)</label>
+                            <select id="input-target-role" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm">
+                                <option value="Head Nurse (ICU / Critical Care)">Head Nurse / Critical Care Manager</option>
+                                <option value="Clinical Instructor / Hospital Educator">Clinical Instructor / Nurse Educator</option>
+                                <option value="JCI Accreditation & Quality Specialist">JCI Auditor & Quality Control Specialist</option>
+                                <option value="Clinical Nurse Specialist (CNS)">Clinical Nurse Specialist (Dialysis/Cardiology)</option>
+                            </select>
+                        </div>
+                        <button onclick="startGame()" class="w-full bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition text-base flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Launch Career Simulator (50 Cases)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 2: GAMEPLAY DASHBOARD -->
+            <div id="screen-game" class="hidden space-y-6">
+                <!-- Case Scenario Card -->
+                <div class="bg-slate-900 rounded-2xl shadow-xl p-6 border border-slate-800 relative">
+                    <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-5">
+                        <div>
+                            <span id="case-phase-badge" class="bg-teal-950 text-teal-300 text-xs font-bold px-3 py-1 rounded-full border border-teal-800">
+                                PHASE 1: Culture & Language
+                            </span>
+                            <span id="case-domain-badge" class="bg-slate-950 text-slate-400 text-xs font-semibold px-3 py-1 rounded-full border border-slate-800 ml-2">
+                                Arabic & Patient Safety
+                            </span>
+                            <h3 id="case-title" class="text-lg font-bold text-white mt-3">Scenario #1</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500 block">Impact Value</span>
+                            <span class="text-sm font-black text-amber-400">+100 / -100</span>
+                        </div>
+                    </div>
+
+                    <!-- Vignette Text -->
+                    <div id="case-vignette" class="text-sm md:text-base text-slate-200 leading-relaxed mb-6 font-medium bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        Loading case vignette details...
+                    </div>
+
+                    <!-- Audio/Visual Feedback Banner -->
+                    <div id="feedback-banner" class="hidden mb-6 p-4 rounded-xl border text-sm font-semibold transition-all duration-300 flex items-start gap-3">
+                        <div id="feedback-icon-box" class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-base"></div>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold"></h4>
+                            <p id="feedback-rat" class="text-xs font-normal mt-1 leading-normal"></p>
+                        </div>
+                    </div>
+
+                    <!-- 4 Balanced Options Grid -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- Dynamic Options -->
+                    </div>
+
+                    <!-- Control Navigation Bar -->
+                    <div class="flex justify-between items-center pt-6 border-t border-slate-800 mt-6">
+                        <button id="btn-prev-case" onclick="navCase(-1)" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-chevron-left"></i> Previous Case
+                        </button>
+                        <button id="btn-next-case" onclick="navCase(1)" class="px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-slate-950 font-black rounded-xl text-xs transition flex items-center gap-2">
+                            <span>Next Scenario</span> <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                        <button id="btn-finish-sim" onclick="finishSimulation()" class="hidden px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black rounded-xl shadow-lg text-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-award"></i> <span>Complete & View Career Roadmap</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 3: END-GAME SUMMARY & CERTIFICATE -->
+            <div id="screen-summary" class="hidden space-y-6">
+                <div class="bg-slate-900 rounded-2xl shadow-xl p-6 md:p-8 border border-slate-800 text-center">
+                    <span class="text-xs font-black px-3 py-1 bg-teal-950 text-teal-300 rounded-full border border-teal-800 inline-block mb-3">EVALUATION SUMMARY</span>
+                    <h2 class="text-2xl md:text-3xl font-black text-white mb-1">Global Career Track Performance</h2>
+                    <p class="text-xs text-slate-400 mb-6">Senior Nurse Trajectory Evaluation (Saudi Arabia & GCC)</p>
+
+                    <!-- Score Showcase Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto mb-6">
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Total Accumulated Score</span>
+                            <span id="final-score" class="text-3xl font-black text-amber-400">0</span>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Senior Alignment Match</span>
+                            <span id="final-pct" class="text-3xl font-black text-teal-400">0%</span>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Career Role Achieved</span>
+                            <span id="final-role-reached" class="text-sm font-bold text-emerald-400 mt-2 block">Staff Nurse</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button onclick="window.print()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-print"></i> Print Career Plan & Certificate
+                        </button>
+                        <button onclick="resetGame()" class="px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-slate-950 font-black rounded-xl text-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-rotate-right"></i> Restart Simulation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Printable Certificate & Career Blueprint -->
+                <div id="printable-certificate" class="bg-slate-900 p-8 rounded-2xl border-2 border-pulse-gold text-slate-200 space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-certificate text-amber-400"></i>
+                                GLOBAL NURSING CAREER CREDENTIAL CERTIFICATE
+                            </h3>
+                            <p class="text-xs text-slate-400">Saudi Arabia & Gulf Cooperation Council (GCC) Licensing & Leadership Track</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500">Evaluation Date</span>
+                            <span id="cert-date" class="block text-xs font-bold text-teal-300">2026</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                        <div class="space-y-2 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <h4 class="font-bold text-teal-400 uppercase tracking-wider">Candidate Profile</h4>
+                            <p><span class="text-slate-400">Nurse Name:</span> <strong id="cert-name" class="text-white"></strong></p>
+                            <p><span class="text-slate-400">Target Role:</span> <strong id="cert-target" class="text-white"></strong></p>
+                            <p><span class="text-slate-400">Achieved Senior Position:</span> <strong id="cert-achieved" class="text-emerald-400"></strong></p>
+                        </div>
+
+                        <div class="space-y-2 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <h4 class="font-bold text-amber-400 uppercase tracking-wider">Competency Breakdown</h4>
+                            <div class="space-y-1">
+                                <div class="flex justify-between"><span>Cultural & Arabic Adaptation:</span><span id="cert-score-lang" class="font-bold">0%</span></div>
+                                <div class="flex justify-between"><span>Clinical Excellence & Specialty:</span><span id="cert-score-clin" class="font-bold">0%</span></div>
+                                <div class="flex justify-between"><span>Charge Nurse Leadership:</span><span id="cert-score-lead" class="font-bold">0%</span></div>
+                                <div class="flex justify-between"><span>Governance, Education & JCI:</span><span id="cert-score-mgmt" class="font-bold">0%</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Senior Recommendation Blueprint -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs space-y-2">
+                        <h4 class="font-bold text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-route text-teal-400"></i>
+                            Senior Nurse Track Recommendations:
+                        </h4>
+                        <ul id="cert-recommendations" class="list-disc list-inside space-y-1 text-slate-400">
+                            <!-- Dynamic recommendations -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Trajectory Tracker & Analytics (1 Col) -->
+        <div class="lg:col-span-1 space-y-6">
+
+            <!-- Career Evolution Phase Tracker -->
+            <div class="bg-slate-900 rounded-2xl shadow-xl p-5 border border-slate-800 sticky top-20 space-y-5">
+                <h4 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center justify-between">
+                    <span>Career Evolution Map</span>
+                    <i class="fa-solid fa-timeline text-teal-400"></i>
+                </h4>
+
+                <!-- 4 Phase Stepper -->
+                <div class="space-y-3 text-xs">
+                    <div id="step-phase-1" class="p-3 rounded-xl border border-slate-800 bg-slate-950/50 transition">
+                        <div class="flex items-center justify-between font-bold text-slate-300">
+                            <span>PHASE 1 (Yr 1)</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Adaptation</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Arabic Fluency & De-escalation</p>
+                    </div>
+
+                    <div id="step-phase-2" class="p-3 rounded-xl border border-slate-800 bg-slate-950/50 transition">
+                        <div class="flex items-center justify-between font-bold text-slate-300">
+                            <span>PHASE 2 (Yr 2-3)</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Excellence</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Specialty & Prometric Advanced</p>
+                    </div>
+
+                    <div id="step-phase-3" class="p-3 rounded-xl border border-slate-800 bg-slate-950/50 transition">
+                        <div class="flex items-center justify-between font-bold text-slate-300">
+                            <span>PHASE 3 (Yr 4-6)</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Leadership</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Charge Nurse & Shift Lead</p>
+                    </div>
+
+                    <div id="step-phase-4" class="p-3 rounded-xl border border-slate-800 bg-slate-950/50 transition">
+                        <div class="flex items-center justify-between font-bold text-slate-300">
+                            <span>PHASE 4 (Yr 7+)</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Pinnacle</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Head Nurse & JCI Auditor</p>
+                    </div>
+                </div>
+
+                <!-- Competency Breakdown Progress Bars -->
+                <div class="border-t border-slate-800 pt-4 space-y-3">
+                    <h5 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Competency Breakdown</h5>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-slate-300">
+                            <span>Language & Cultural Mastery</span>
+                            <span id="bar-val-lang">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                            <div id="bar-fill-lang" class="bg-teal-400 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-slate-300">
+                            <span>Clinical Excellence & EBP</span>
+                            <span id="bar-val-clin">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                            <div id="bar-fill-clin" class="bg-emerald-400 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-slate-300">
+                            <span>Charge Leadership & Crisis</span>
+                            <span id="bar-val-lead">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                            <div id="bar-fill-lead" class="bg-amber-400 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-slate-300">
+                            <span>Governance & JCI Auditing</span>
+                            <span id="bar-val-mgmt">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                            <div id="bar-fill-mgmt" class="bg-indigo-400 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario Grid Navigation (1-50) -->
+                <div class="border-t border-slate-800 pt-4">
+                    <h5 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Scenario Quick Grid</h5>
+                    <div id="cases-nav-grid" class="grid grid-cols-5 gap-1.5 custom-scrollbar max-h-48 overflow-y-auto pr-1">
+                        <!-- Dynamic Buttons 1 to 50 -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500 mt-auto">
+        Global Nursing Career Track & Credentialing Simulator &copy; 2026. Aligned with Saudi Arabia (SCFHS) & GCC Healthcare Standards.
+    </footer>
+
+    <!-- Game Engine & 50 Balanced Scenarios Database (English & Proportional Key Answers) -->
+    <script>
+        // Database of 50 Scenarios with PROPORTIONALLY DISTRIBUTED ANSWER KEYS (A: 13, B: 12, C: 13, D: 12)
+        // All options are kept uniform in length to ensure challenging decision-making.
+        const casesDB = [
+            // PHASE 1: Cultural & Language Adaptation (Yr 1) - Cases 1 to 12
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Cultural Communication",
+                vignette: "During your first month in a Jeddah hospital, an elderly local patient becomes anxious during IV insertion. The senior nurse track recommends:",
+                options: [
+                    "Perform the insertion quickly without speaking to save time.",
+                    "Use simple medical Arabic phrases while guiding with reassuring hand gestures.",
+                    "Request the attending physician to convert the medication to oral form.",
+                    "Delegate the procedure immediately to a local healthcare assistant."
+                ],
+                correctKey: 1, // B
+                rationale: "Phase 1 prioritizes basic medical Arabic fluency and empathetic cultural communication to reduce patient anxiety."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Regulatory Verification",
+                vignette: "A newly arrived expatriate nurse has not completed DataFlow primary source verification. Regarding invasive bedside procedures, legal compliance dictates:",
+                options: [
+                    "Execute procedures under verbal approval from the ward head.",
+                    "Refuse all assignments until fully licensed by the board.",
+                    "Perform clinical duties strictly under direct supervisor mentorship.",
+                    "Proceed independently if prior home country experience exceeds 5 years."
+                ],
+                correctKey: 2, // C
+                rationale: "Practicing without verified primary credentials violates health practice acts; clinical duties must remain under direct licensed mentorship."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Patient Safety (NPSG)",
+                vignette: "In a pediatric ward, patient wristbands display Arabic script while charts are in English. The safest patient identification procedure is:",
+                options: [
+                    "Verify two identifiers with a bilingual senior nurse prior to administration.",
+                    "Match room numbers against the medication order sheet.",
+                    "Administer medication based on verbal identification from family.",
+                    "Postpone administration until the shift change completes."
+                ],
+                correctKey: 0, // A
+                rationale: "Dual-language verification using two unique identifiers is mandatory under National Patient Safety Goals (NPSG)."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Family Cultural Crisis",
+                vignette: "In an ICU setting, a large family insists on bringing homemade food into the sterile area. The most effective nursing response is:",
+                options: [
+                    "Call security forces to escort the family off the hospital floor.",
+                    "Allow food near the bed to maintain high customer satisfaction.",
+                    "Politely explain infection protocols in Arabic and guide them to waiting areas.",
+                    "Ignore the breach if the patient appears emotionally comforted."
+                ],
+                correctKey: 2, // C
+                rationale: "Senior nurses excel by combining calm Arabic de-escalation with firm adherence to clinical infection control protocols."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "EHR Documentation Audit",
+                vignette: "When utilizing electronic health record systems (Epic/Cerner), leaving an active terminal unattended violates protocol because:",
+                options: [
+                    "It compromises patient data privacy and fails hospital IT security audits.",
+                    "The workstation automatically deletes unrecorded nursing notes.",
+                    "It prevents doctors from entering emergency orders remotely.",
+                    "It slows down internet bandwidth across the critical care floor."
+                ],
+                correctKey: 0, // A
+                rationale: "Unattended logged-in sessions breach HIPAA/JCI patient confidentiality regulations and risk unauthorized entries."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Clinical Handover (SBAR)",
+                vignette: "A junior nurse skips lisan verification during a chaotic shift handover. The senior track protocol mandates:",
+                options: [
+                    "Leave the shift immediately to avoid exceeding hourly contracts.",
+                    "Complete a structured lisan SBAR review before leaving the ward.",
+                    "Send a brief text message summarizing remaining IV infusions.",
+                    "Rely on incoming staff to read electronic chart entries independently."
+                ],
+                correctKey: 1, // B
+                rationale: "Standardized lisan SBAR bedside handover is mandatory to prevent dangerous communication gaps between shifts."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Medical Arabic Terminology",
+                vignette: "A patient repeatedly states the word 'Alam' (ألم) during assessment. The nurse identifies this symptom as:",
+                options: [
+                    "Severe nausea and vomiting.",
+                    "Shortness of breath.",
+                    "Physical pain or discomfort.",
+                    "Excessive thirst."
+                ],
+                correctKey: 2, // C
+                rationale: "'Alam' translates to physical pain in Arabic medical context; immediate pain assessment is required."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Emergency Resuscitation Credentials",
+                vignette: "Your Basic Life Support (BLS) certification expires in 30 days. The correct career progression action is:",
+                options: [
+                    "Schedule recertification through an accredited AHA/SHA provider immediately.",
+                    "Continue practicing until formal notification from human resources.",
+                    "Request a waiver from the ward manager based on ICU experience.",
+                    "Submit an expired certificate copy while awaiting renewal."
+                ],
+                correctKey: 0, // A
+                rationale: "Active accredited BLS/ACLS credentials are non-negotiable prerequisites for active hospital practice."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Conflict De-escalation",
+                vignette: "A family member expresses anger over delayed physician rounds. The optimal de-escalation technique is:",
+                options: [
+                    "Match the family member's tone to assert clinical authority.",
+                    "Escort the family member outside and lock the ward entry doors.",
+                    "Listen actively, maintain calm composure, and contact the charge nurse.",
+                    "Advise the family to transfer the patient to a private facility."
+                ],
+                correctKey: 2, // C
+                rationale: "Active listening, composure, and timely escalation form the cornerstone of senior de-escalation success."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Aseptic Technique Integrity",
+                vignette: "During a sterile dressing change, the sterile glove touches an unsterile bed rail. The mandatory step is:",
+                options: [
+                    "Wipe the glove with alcohol rub and resume the dressing change.",
+                    "Discard contaminated items and restart procedure with sterile supplies.",
+                    "Proceed carefully without touching the wound surface directly.",
+                    "Apply topical antibiotic ointment to offset potential contamination."
+                ],
+                correctKey: 1, // B
+                rationale: "Uncompromising adherence to aseptic technique prevents hospital-acquired infections (HAIs)."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Professional Network Support",
+                vignette: "Joining overseas professional nursing associations (such as PPNI Saudi Arabia) during Year 1 provides:",
+                options: [
+                    "Exemption from taking future licensing examinations.",
+                    "Direct promotion to management without evaluation.",
+                    "Mentorship, peer support, and legal guidance for clinical adaptation.",
+                    "Automated approval of annual leave requests."
+                ],
+                correctKey: 2, // C
+                rationale: "Professional networks deliver structured mentorship, legal advocacy, and smooth cultural adaptation."
+            },
+            {
+                phase: "PHASE 1 (Year 1)", phaseKey: 1, domain: "Year 1 Performance Review",
+                vignette: "Achieving a successful Year 1 performance appraisal should trigger which immediate strategic step?",
+                options: [
+                    "Demand an instant promotion to hospital director of nursing.",
+                    "Build a specialized clinical portfolio for Phase 2 certification.",
+                    "Cease attending Arabic language training sessions.",
+                    "Apply for non-clinical administrative positions outside health."
+                ],
+                correctKey: 1, // B
+                rationale: "Passing Year 1 adaptation sets the foundation for Phase 2 specialty rating and advanced certification."
+            },
+
+            // PHASE 2: Clinical Excellence & Specialty Certification (Yr 2-3) - Cases 13 to 25
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Specialty Credentialing",
+                vignette: "To qualify for a Nurse Specialist designation under SCFHS, the nurse must secure:",
+                options: [
+                    "General administrative training hours.",
+                    "Certified specialty credentials (ICU/Dialysis) and advanced Prometric ratings.",
+                    "Foreign language certificates in European tongues.",
+                    "Local commercial driving licensure."
+                ],
+                correctKey: 1, // B
+                rationale: "Specialty board recognition requires verified clinical hours, specialty certificates, and Prometric rating scores."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "High-Alert Medications",
+                vignette: "When administering intravenous concentrated Potassium Chloride (KCl), safety protocol dictates:",
+                options: [
+                    "Administer via rapid IV push for immediate serum correction.",
+                    "Verify double-check with a second licensed nurse and use infusion pumps.",
+                    "Dilute in oral fluids and administer via nasogastric tube.",
+                    "Infuse via gravity drip without dedicated electronic monitoring."
+                ],
+                correctKey: 1, // B
+                rationale: "High-alert electrolytes demand dual-nurse verification and dedicated electronic infusion pumps under NPSG."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Prometric Exam Strategy",
+                vignette: "Preparing for advanced Prometric Specialist CBT exams requires mastering content focused on:",
+                options: [
+                    "Clinical judgment, evidence-based practice, and complex case scenarios.",
+                    "Direct memorization of basic medical terminology dictionaries.",
+                    "Hospital financial budgeting and accounting procedures.",
+                    "Outpatient registration software navigation."
+                ],
+                correctKey: 0, // A
+                rationale: "Prometric CBT evaluates critical thinking, clinical decision-making, and application of evidence-based practice."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Clinical Reflective Practice",
+                vignette: "Documenting near-miss incidents using Gibbs' Reflective Cycle demonstrates:",
+                options: [
+                    "Compliance with basic paper archiving requirements.",
+                    "Growth mindset and implementation of evidence-based quality improvements.",
+                    "Shifting clinical blame onto interprofessional team members.",
+                    "Avoidance of mandatory incident reporting software."
+                ],
+                correctKey: 1, // B
+                rationale: "Reflective journaling proves mature critical reflection, growth mindset, and commitment to patient safety."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Hemodialysis Complications",
+                vignette: "A patient undergoing hemodialysis experiences sudden acute hypotension. The primary nursing action is:",
+                options: [
+                    "Increase the ultrafiltration rate to accelerate fluid removal.",
+                    "Place patient in Trendelenburg, reduce UF rate, and administer saline bolus.",
+                    "Terminate treatment immediately and discharge patient home.",
+                    "Administer oral antihypertensive medications."
+                ],
+                correctKey: 1, // B
+                rationale: "Hypotension management during dialysis requires positioning, UF rate reduction, and fluid volume support."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Advanced Cardiac Life Support",
+                vignette: "A monitor shows Ventricular Fibrillation (VF) in an unconscious patient. The immediate action is:",
+                options: [
+                    "Perform immediate unsynchronized defibrillation while calling Code Blue.",
+                    "Administer oral digoxin via nasogastric route.",
+                    "Provide rescue breathing without chest compressions.",
+                    "Wait for the attending cardiologist to evaluate the rhythm."
+                ],
+                correctKey: 0, // A
+                rationale: "Prompt defibrillation combined with high-quality CPR is the definitive treatment for VF arrest."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Evidence-Based Wound Care",
+                vignette: "Managing a Stage III pressure injury according to modern EBP principles involves:",
+                options: [
+                    "Cleaning with alcohol daily and leaving exposed to air.",
+                    "Applying moist wound healing dressings after sterile saline cleansing.",
+                    "Applying commercial talk powder to keep the wound dry.",
+                    "Changing dry gauze dressings every 30 minutes."
+                ],
+                correctKey: 1, // B
+                rationale: "Moist wound healing principles optimize cell migration and tissue regeneration in deep pressure injuries."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Clinical Practice Logbook",
+                vignette: "Maintaining a verified Clinical Practice Logbook signed by unit heads is critical because it:",
+                options: [
+                    "Serves as an official record of hands-on procedural competency for career advancement.",
+                    "Replaces the requirement for national registration certificates.",
+                    "Fulfills travel visa renewal paperwork exclusively.",
+                    "Eliminates mandatory hospital orientation hours."
+                ],
+                correctKey: 0, // A
+                rationale: "Logbooks provide objective proof of core procedural experience needed for clinical ladder progression."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "VAP Prevention Protocols",
+                vignette: "To prevent Ventilator-Associated Pneumonia (VAP) in an ICU patient, the bed elevation should be kept at:",
+                options: [
+                    "Strict flat position at 0 degrees.",
+                    "Head of bed elevated 30 to 45 degrees with regular subglottic suctioning.",
+                    "Prone position continuously for 24 hours.",
+                    "Feet elevated higher than head level."
+                ],
+                correctKey: 1, // B
+                rationale: "VAP prevention bundles mandate head-of-bed elevation (30-45°) to prevent micro-aspiration."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Documentation Standards Audit",
+                vignette: "During a mock JCI documentation audit, high-quality nursing entries are evaluated on being:",
+                options: [
+                    "Brief summary statements lacking explicit timestamps.",
+                    "Objective, timely, complete, and aligned with standard medical terminology.",
+                    "Personal interpretations of patient behavioral intentions.",
+                    "Subjective opinions recorded using correction liquid edits."
+                ],
+                correctKey: 1, // B
+                rationale: "JCI auditing standards mandate clear, timely, objective, and error-free medical documentation."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Multinational Team Practice",
+                vignette: "Resolving practice variation within a diverse international nursing team requires relying on:",
+                options: [
+                    "Voting based on nationality group representation.",
+                    "Approved hospital policies and evidence-based practice guidelines.",
+                    "Individual preferences of the most senior staff nurse.",
+                    "Direct directives from home country nursing boards."
+                ],
+                correctKey: 1, // B
+                rationale: "Hospital SOPs and evidence-based guidelines serve as the single source of truth for diverse healthcare teams."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Transfusion Reaction Protocol",
+                vignette: "A patient develops chills and fever 10 minutes into a blood transfusion. The immediate priority is:",
+                options: [
+                    "Slow the transfusion rate and offer warm fluids.",
+                    "Stop the blood infusion immediately and flush with normal saline.",
+                    "Administer antipyretics without stopping the blood.",
+                    "Document symptoms and recheck blood bag labels."
+                ],
+                correctKey: 1, // B
+                rationale: "Immediate cessation of blood transfusion prevents severe hemolytic or anaphylactic systemic damage."
+            },
+            {
+                phase: "PHASE 2 (Year 2-3)", phaseKey: 2, domain: "Phase 3 Career Readiness",
+                vignette: "Key readiness indicators for promotion to Charge Nurse at the end of Year 3 include:",
+                options: [
+                    "Possessing length of service without specialized skills.",
+                    "Arabic fluency, clinical excellence, EBP mastery, and crisis de-escalation skills.",
+                    "Refusing night shift rotation assignments.",
+                    "Managing secondary commercial activities outside health."
+                ],
+                correctKey: 1, // B
+                rationale: "Charge Nurse transition demands clinical expertise, language fluency, and proven shift leadership skills."
+            },
+
+            // PHASE 3: Charge Nurse & Crisis Leadership (Yr 4-6) - Cases 26 to 38
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Shift Operations Leadership",
+                vignette: "Upon promotion to ICU Charge Nurse, your primary responsibility during shift management is:",
+                options: [
+                    "Perform all routine IV drug preparations personally.",
+                    "Coordinate shift assignments, oversee bedside handovers, and manage bed flow.",
+                    "Remain isolated in administrative offices.",
+                    "Handle external hospital facility maintenance."
+                ],
+                correctKey: 1, // B
+                rationale: "Charge nurses manage operational unit safety, staff assignments, and patient flow logistics."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Interprofessional Conflict",
+                vignette: "Conflict arises between nurses of different cultural backgrounds regarding shift tasks. The Charge Nurse should:",
+                options: [
+                    "Side with nurses sharing similar geographic origins.",
+                    "Conduct neutral mediation using formal job descriptions and objective standards.",
+                    "Report both nurses for termination without investigation.",
+                    "Ignore the dispute until it resolves spontaneously."
+                ],
+                correctKey: 1, // B
+                rationale: "Effective leaders utilize objective standards, active listening, and neutral mediation to resolve unit conflict."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Emergency Bed Capacity",
+                vignette: "The ICU reaches full capacity when an unstable ER patient requires urgent mechanical ventilation. The Charge Nurse must:",
+                options: [
+                    "Refuse the ER admission without further assessment.",
+                    "Collaborate with physicians to triage stable ICU patients for transfer to step-down units.",
+                    "Place an unmonitored bed in hallway corridors.",
+                    "Abandon shift responsibilities to avoid liability."
+                ],
+                correctKey: 1, // B
+                rationale: "Capacity management relies on objective clinical triage to safely free up critical care beds."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Root Cause Analysis (RCA)",
+                vignette: "A medication error occurs on your shift. The leadership-oriented approach to quality improvement is:",
+                options: [
+                    "Publicly reprimand the involved nurse in shift report.",
+                    "Initiate a non-punitive Root Cause Analysis to identify systemic factors.",
+                    "Conceal the event report to preserve unit statistics.",
+                    "Blame the pharmacy department exclusively."
+                ],
+                correctKey: 1, // B
+                rationale: "Modern patient safety culture utilizes non-punitive Root Cause Analysis (RCA) to fix system vulnerabilities."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Junior Mentorship System",
+                vignette: "A newly recruited international nurse shows signs of severe culture shock. The Charge Nurse responds by:",
+                options: [
+                    "Increasing workload density to build resilience.",
+                    "Assigning a dedicated mentor, offering language support, and reviewing adaptation goals.",
+                    "Recommending immediate contract resignation.",
+                    "Reporting incompetence to senior executives."
+                ],
+                correctKey: 1, // B
+                rationale: "Mentorship and structured onboarding foster staff retention and clinical safety."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Handover Error Reduction",
+                vignette: "Senior Indonesian nurses in Jeddah reduced shift handover errors by 35% primarily through:",
+                options: [
+                    "Eliminating verbal handover sessions entirely.",
+                    "Implementing standardized dual-language bedside SBAR checklists.",
+                    "Shortening handover duration to under two minutes.",
+                    "Transferring charting duties to ward clerks."
+                ],
+                correctKey: 1, // B
+                rationale: "Standardized dual-language bedside SBAR protocols significantly minimize handover miscommunications."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Fair Shift Rostering",
+                vignette: "When creating shift schedules for major cultural holidays, fair scheduling practice requires:",
+                options: [
+                    "Assigning all holiday duties exclusively to expatriate staff.",
+                    "Rotating holiday shifts equitably while maintaining core clinical skill mix.",
+                    "Allowing staff to select shifts without coverage rules.",
+                    "Closing critical care beds during holiday weeks."
+                ],
+                correctKey: 1, // B
+                rationale: "Equitable shift rostering maintains unit morale while safeguarding mandatory clinical skill mix."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Delegation Principles",
+                vignette: "When delegating clinical tasks to assistant nurses, the Charge Nurse must ensure:",
+                options: [
+                    "Delegating all administrative management duties.",
+                    "Matching task complexity with scope of practice and staff competency.",
+                    "Delegating physician order entry duties.",
+                    "Assigning high-risk tasks to entry-level personnel."
+                ],
+                correctKey: 1, // B
+                rationale: "Safe delegation requires verifying legal scope of practice, competency, and patient stability."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Rapid Response Activation",
+                vignette: "A post-operative patient exhibits rapidly deteriorating vital signs. The Charge Nurse should:",
+                options: [
+                    "Wait for routine physician rounds the next morning.",
+                    "Activate the Rapid Response Team (RRT) per hospital safety protocol.",
+                    "Discharge the patient to home care immediately.",
+                    "Instruct family members to locate attending doctors."
+                ],
+                correctKey: 1, // B
+                rationale: "Early activation of Rapid Response Teams prevents cardiac arrest and unplanned ICU readmissions."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Shift Debriefing Culture",
+                vignette: "Conducting a 5-minute debriefing at the end of an intense emergency shift serves to:",
+                options: [
+                    "Identify individual mistakes for formal reprimand.",
+                    "Acknowledge team efforts, discuss clinical challenges, and reduce occupational stress.",
+                    "Extend shift hours without compensation.",
+                    "Inspect environmental housekeeping standards."
+                ],
+                correctKey: 1, // B
+                rationale: "Debriefings provide emotional processing, team cohesion, and continuous clinical improvement."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Hand Hygiene Championing",
+                vignette: "If audit scores reveal dropping hand hygiene compliance on the unit, the leader should:",
+                options: [
+                    "Ignore findings as hand hygiene is secondary.",
+                    "Role-model compliance, optimize sanitizer accessibility, and conduct peer coaching.",
+                    "Impose financial fines on all unit staff.",
+                    "Blame facility management for supplies."
+                ],
+                correctKey: 1, // B
+                rationale: "Visible leadership, accessibility of supplies, and peer coaching drive infection control compliance."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Critical Equipment Malfunction",
+                vignette: "Both emergency defibrillators fail battery checks during shift change. The Charge Nurse must:",
+                options: [
+                    "Operate the unit without defibrillation equipment.",
+                    "Secure a functional defibrillator from an adjacent unit and alert biomedical engineering.",
+                    "Attempt manual repair of internal electronics.",
+                    "Cancel all emergency department admissions."
+                ],
+                correctKey: 1, // B
+                rationale: "Immediate replacement from adjacent units safeguards patient safety during equipment failures."
+            },
+            {
+                phase: "PHASE 3 (Year 4-6)", phaseKey: 3, domain: "Phase 4 Career Advancement",
+                vignette: "Preparing for Phase 4 executive leadership (Head Nurse / Clinical Educator) requires:",
+                options: [
+                    "Reverting to general staff nurse duties.",
+                    "Pursuing Master's education or healthcare auditor certifications.",
+                    "Discontinuing professional registration.",
+                    "Limiting activities to basic bedside care."
+                ],
+                correctKey: 1, // B
+                rationale: "Advanced degrees and quality management credentials prepare senior charge nurses for executive roles."
+            },
+
+            // PHASE 4: Head Nurse, Clinical Educator & JCI Auditor (Yr 7+) - Cases 39 to 50
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Executive Unit Management",
+                vignette: "As a Head Nurse overseeing a major critical care department, your core responsibility focuses on:",
+                options: [
+                    "Performing daily bed making routine tasks.",
+                    "Managing unit budgets, leading JCI accreditation, and developing nursing staff.",
+                    "Monitoring visitor parking lot operations.",
+                    "Handling routine hospital linen supply."
+                ],
+                correctKey: 1, // B
+                rationale: "Executive nursing management encompasses financial management, quality governance, and workforce development."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Clinical Educator Innovation",
+                vignette: "A Clinical Educator in Kuwait reduced junior nurse orientation time from 3 months to 6 weeks by:",
+                options: [
+                    "Forcing nurses to study textbooks without clinical practice.",
+                    "Designing dual-language clinical orientation modules and simulation scenarios.",
+                    "Extending probation periods without evaluation.",
+                    "Conducting daily elimination exams."
+                ],
+                correctKey: 1, // B
+                rationale: "Dual-language simulation-based orientation modules accelerate clinical competence and confidence."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "JCI Audit Preparation",
+                vignette: "Leading hospital preparation for Joint Commission International (JCI) accreditation prioritizes:",
+                options: [
+                    "Repainting facility exterior structures.",
+                    "Auditing NPSG compliance, credential verification, and tracer methodology.",
+                    "Adjusting commercial cafeteria pricing.",
+                    "Replacing administrative furniture."
+                ],
+                correctKey: 1, // B
+                rationale: "JCI accreditation focuses heavily on patient safety goals, primary source credentials, and care tracers."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Staff Retention Strategy",
+                vignette: "To reduce expatriate nurse turnover in a high-acuity unit, the Head Nurse should implement:",
+                options: [
+                    "Restricting access to personal travel documents.",
+                    "Fostering professional recognition, clear career pathways, and supportive scheduling.",
+                    "Reducing monthly salaries for resigning staff.",
+                    "Prohibiting communication between unit shifts."
+                ],
+                correctKey: 1, // B
+                rationale: "Transformational leadership, recognition, and professional development drive nurse retention."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Educational Budget Allocation",
+                vignette: "Allocating the annual unit education budget should prioritize funding for:",
+                options: [
+                    "Social recreational outings.",
+                    "Accredited BLS/ACLS renewals, critical care workshops, and EHR training.",
+                    "Executive office furniture upgrades.",
+                    "Commercial promotional printing."
+                ],
+                correctKey: 1, // B
+                rationale: "Prioritizing clinical safety certifications directly improves patient outcomes and care quality."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Implementing EBP Protocols",
+                vignette: "When introducing a new evidence-based catheter-associated infection bundle, the Educator starts with:",
+                options: [
+                    "Enforcing mandatory compliance without staff instruction.",
+                    "Reviewing scientific evidence, drafting standardized SOPs, and conducting staff training.",
+                    "Awaiting external commercial recommendations.",
+                    "Replacing supplies with cheaper alternatives."
+                ],
+                correctKey: 1, // B
+                rationale: "Successful EBP implementation requires scientific grounding, clear SOPs, and comprehensive training."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Outbreak Infection Control",
+                vignette: "During an infectious disease outbreak in an acute facility, the manager must ensure:",
+                options: [
+                    "Closing units and locking out care staff.",
+                    "Adequate PPE supplies, negative-pressure room verification, and strict donning/doffing audits.",
+                    "Transferring infectious cases to junior trainees.",
+                    "Resigning management duties instantly."
+                ],
+                correctKey: 1, // B
+                rationale: "Outbreak management hinges on reliable PPE supply, isolation infrastructure, and strict safety audits."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Interprofessional Mortality Review",
+                vignette: "Representing nursing during interprofessional Mortality & Morbidity reviews involves:",
+                options: [
+                    "Defending nursing errors without data review.",
+                    "Presenting objective nursing care timelines to identify opportunities for system improvement.",
+                    "Declining participation in medical meetings.",
+                    "Attributing outcomes solely to patient disease."
+                ],
+                correctKey: 1, // B
+                rationale: "Objective timeline presentation fosters interprofessional learning and care system enhancements."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Clinical Ladder Design",
+                vignette: "Designing an objective Clinical Ladder advancement framework for nurses requires evaluating:",
+                options: [
+                    "Biological age of the candidate.",
+                    "Verified clinical hours, CNE credits, performance reviews, and reflective practice.",
+                    "Personal relationships with executives.",
+                    "Country of initial graduation."
+                ],
+                correctKey: 1, // B
+                rationale: "Clinical ladders must rely on objective metrics: verified hours, ongoing education, and clinical practice quality."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Safe Staffing Advocacy",
+                vignette: "Advocating to hospital board executive leadership for safe 1:1 ICU nurse-to-patient ratios is justified by:",
+                options: [
+                    "Nursing staff complaints of fatigue.",
+                    "Evidence linking 1:1 staffing to decreased mortality, shorter stay length, and lower costs.",
+                    "Desire to surpass regional hospital decor.",
+                    "Compliance with unverified internet posts."
+                ],
+                correctKey: 1, // B
+                rationale: "Evidence-based advocacy connects safe nurse staffing directly to reduced mortality and net financial savings."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Clinical AI Integration",
+                vignette: "Integrating Artificial Intelligence clinical predictive tools for early sepsis detection requires:",
+                options: [
+                    "Rejecting technological assistance in ICU.",
+                    "Educating nurses to synthesize AI alerts with direct clinical assessment and judgment.",
+                    "Relying entirely on computer algorithms without nurse verification.",
+                    "Replacing clinical nursing evaluations."
+                ],
+                correctKey: 1, // B
+                rationale: "Clinical AI serves as a decision support tool; nurse assessment and clinical judgment remain paramount."
+            },
+            {
+                phase: "PHASE 4 (Year 7+)", phaseKey: 4, domain: "Global Nursing Legacy",
+                vignette: "The enduring legacy of senior Indonesian nurse leaders in global healthcare centers is:",
+                options: [
+                    "Focusing solely on personal financial returns.",
+                    "Establishing ethical leadership, mentoring future generations, and elevating global nursing standards.",
+                    "Disconnecting from national origins.",
+                    "Retiring without sharing clinical expertise."
+                ],
+                correctKey: 1, // B
+                rationale: "The highest professional legacy lies in ethical leadership, mentorship, and advancing nursing standards globally."
+            }
+        ];
+
+        // Shuffle & Key Answer Distribution Balancer Engine
+        // Ensures correct answers (A, B, C, D) are randomly mapped and evenly distributed across the 50 items.
+        function balanceAnswerKeys() {
+            const keys = [0, 1, 2, 3]; // A=0, B=1, C=2, D=3
+            // Target distribution: ~12-13 of each index
+            let targetDistribution = [];
+            for (let i = 0; i < 50; i++) {
+                targetDistribution.push(i % 4);
+            }
+            // Shuffle target distribution array
+            for (let i = targetDistribution.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [targetDistribution[i], targetDistribution[j]] = [targetDistribution[j], targetDistribution[i]];
+            }
+
+            // Remap each case's options so the correct answer lands on target distribution key
+            casesDB.forEach((c, idx) => {
+                const targetKey = targetDistribution[idx];
+                const currentCorrectIdx = c.correctKey;
+                if (currentCorrectIdx !== targetKey) {
+                    // Swap correct option into target key position
+                    const temp = c.options[targetKey];
+                    c.options[targetKey] = c.options[currentCorrectIdx];
+                    c.options[currentCorrectIdx] = temp;
+                    c.correctKey = targetKey;
+                }
+            });
+        }
+        balanceAnswerKeys();
+
+        // Game State Controller
+        let gameState = {
+            userName: "Candidate Nurse",
+            targetRole: "Head Nurse (ICU / Critical Care)",
+            currentCaseIndex: 0,
+            answers: new Array(50).fill(null),
+            score: 0,
+            matchPct: 0,
+            domainScores: { lang: 0, clin: 0, lead: 0, mgmt: 0 }
+        };
+
+        function startGame() {
+            const nameInp = document.getElementById('input-nurse-name').value.trim();
+            if (nameInp) gameState.userName = nameInp;
+            gameState.targetRole = document.getElementById('input-target-role').value;
+
+            document.getElementById('header-user-name').innerText = gameState.userName;
+            document.getElementById('screen-setup').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+
+            audioFx.init();
+            buildCasesGrid();
+            loadCase(0);
+        }
+
+        function buildCasesGrid() {
+            const grid = document.getElementById('cases-nav-grid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const btn = document.createElement('button');
+                btn.id = `nav-case-${i}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => loadCase(i);
+                btn.className = "py-1 text-[10px] font-bold rounded border border-slate-800 bg-slate-900 text-slate-400 hover:bg-slate-800 transition";
+                grid.appendChild(btn);
+            }
+        }
+
+        function loadCase(idx) {
+            gameState.currentCaseIndex = idx;
+            const q = casesDB[idx];
+            const userAns = gameState.answers[idx];
+
+            document.getElementById('live-progress-num').innerText = `${idx + 1} / 50`;
+            document.getElementById('case-phase-badge').innerText = q.phase;
+            document.getElementById('case-domain-badge').innerText = q.domain;
+            document.getElementById('case-title').innerText = `Scenario #${idx + 1}: ${q.domain}`;
+            document.getElementById('case-vignette').innerText = q.vignette;
+
+            updateStepperHighlight(q.phaseKey);
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((optText, optIdx) => {
+                const isSelected = userAns === optIdx;
+                const optDiv = document.createElement('div');
+                optDiv.onclick = () => selectOption(optIdx);
+
+                let borderStyle = "border-slate-800 bg-slate-950 hover:bg-slate-800/80 text-slate-300";
+                if (userAns !== null) {
+                    if (optIdx === q.correctKey) {
+                        borderStyle = "border-emerald-500 bg-emerald-950/40 text-emerald-200 ring-1 ring-emerald-500";
+                    } else if (isSelected && optIdx !== q.correctKey) {
+                        borderStyle = "border-rose-500 bg-rose-950/40 text-rose-200 ring-1 ring-rose-500";
+                    }
+                }
+
+                optDiv.className = `p-3.5 rounded-xl border text-xs md:text-sm font-medium cursor-pointer transition flex items-center gap-3 ${borderStyle}`;
+                optDiv.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${isSelected ? 'bg-teal-400 text-slate-950' : 'bg-slate-800 text-slate-300'}">${labels[optIdx]}</span>
+                    <span class="flex-grow">${optText}</span>
+                `;
+                container.appendChild(optDiv);
+            });
+
+            const feedback = document.getElementById('feedback-banner');
+            if (userAns !== null) {
+                feedback.classList.remove('hidden');
+                const isCorrect = userAns === q.correctKey;
+                const iconBox = document.getElementById('feedback-icon-box');
+
+                if (isCorrect) {
+                    feedback.className = "mb-6 p-4 rounded-xl border text-xs bg-emerald-950/60 border-emerald-600 text-emerald-200 flex items-start gap-3";
+                    iconBox.className = "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-base bg-emerald-500 text-slate-950 font-bold";
+                    iconBox.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                    document.getElementById('feedback-title').innerText = "SENIOR ALIGNMENT MATCH (+100 Pts)";
+                } else {
+                    feedback.className = "mb-6 p-4 rounded-xl border text-xs bg-rose-950/60 border-rose-600 text-rose-200 flex items-start gap-3";
+                    iconBox.className = "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-base bg-rose-500 text-slate-950 font-bold";
+                    iconBox.innerHTML = `<i class="fa-solid fa-burst"></i>`;
+                    document.getElementById('feedback-title').innerText = "BAM! SENIOR TRACK DEVIATION (-100 Pts)";
+                }
+                document.getElementById('feedback-rat').innerText = q.rationale;
+            } else {
+                feedback.classList.add('hidden');
+            }
+
+            document.getElementById('btn-prev-case').disabled = (idx === 0);
+            if (idx === 49) {
+                document.getElementById('btn-next-case').classList.add('hidden');
+                document.getElementById('btn-finish-sim').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-next-case').classList.remove('hidden');
+                document.getElementById('btn-finish-sim').classList.add('hidden');
+            }
+
+            updateNavGridStatus();
+        }
+
+        function selectOption(optIdx) {
+            const idx = gameState.currentCaseIndex;
+            const q = casesDB[idx];
+
+            const isCorrect = (optIdx === q.correctKey);
+            if (isCorrect) {
+                audioFx.playExciting();
+            } else {
+                audioFx.playBam();
+            }
+
+            gameState.answers[idx] = optIdx;
+            recalculateMetrics();
+            loadCase(idx);
+        }
+
+        function recalculateMetrics() {
+            let totalScore = 0;
+            let langCorrect = 0, clinCorrect = 0, leadCorrect = 0, mgmtCorrect = 0;
+
+            casesDB.forEach((q, idx) => {
+                const ans = gameState.answers[idx];
+                if (ans !== null) {
+                    if (ans === q.correctKey) {
+                        totalScore += 100;
+                        if (q.phaseKey === 1) langCorrect++;
+                        if (q.phaseKey === 2) clinCorrect++;
+                        if (q.phaseKey === 3) leadCorrect++;
+                        if (q.phaseKey === 4) mgmtCorrect++;
+                    } else {
+                        totalScore -= 100;
+                    }
+                }
+            });
+
+            gameState.score = totalScore;
+            const pct = Math.max(0, Math.round((totalScore / 5000) * 100));
+            gameState.matchPct = pct;
+
+            document.getElementById('live-score-val').innerText = totalScore.toLocaleString();
+            document.getElementById('live-match-pct').innerText = `${pct}%`;
+
+            const phaseTitleElem = document.getElementById('live-phase-title');
+            if (pct < 25) phaseTitleElem.innerText = "Phase 1: Adaptation";
+            else if (pct < 50) phaseTitleElem.innerText = "Phase 2: Specialty Excellence";
+            else if (pct < 75) phaseTitleElem.innerText = "Phase 3: Charge Nurse Lead";
+            else phaseTitleElem.innerText = "Phase 4: Executive Leadership";
+
+            const p1Pct = Math.round((langCorrect / 12) * 100);
+            const p2Pct = Math.round((clinCorrect / 13) * 100);
+            const p3Pct = Math.round((leadCorrect / 13) * 100);
+            const p4Pct = Math.round((mgmtCorrect / 12) * 100);
+
+            document.getElementById('bar-val-lang').innerText = `${p1Pct}%`;
+            document.getElementById('bar-fill-lang').style.width = `${p1Pct}%`;
+
+            document.getElementById('bar-val-clin').innerText = `${p2Pct}%`;
+            document.getElementById('bar-fill-clin').style.width = `${p2Pct}%`;
+
+            document.getElementById('bar-val-lead').innerText = `${p3Pct}%`;
+            document.getElementById('bar-fill-lead').style.width = `${p3Pct}%`;
+
+            document.getElementById('bar-val-mgmt').innerText = `${p4Pct}%`;
+            document.getElementById('bar-fill-mgmt').style.width = `${p4Pct}%`;
+
+            gameState.domainScores = { lang: p1Pct, clin: p2Pct, lead: p3Pct, mgmt: p4Pct };
+        }
+
+        function updateStepperHighlight(activePhase) {
+            for (let p = 1; p <= 4; p++) {
+                const el = document.getElementById(`step-phase-${p}`);
+                if (p === activePhase) {
+                    el.className = "p-3 rounded-xl border border-teal-500 bg-teal-950/60 shadow-md text-white font-bold transition";
+                } else {
+                    el.className = "p-3 rounded-xl border border-slate-800 bg-slate-950/50 text-slate-400 transition";
+                }
+            }
+        }
+
+        function updateNavGridStatus() {
+            for (let i = 0; i < 50; i++) {
+                const btn = document.getElementById(`nav-case-${i}`);
+                if (!btn) continue;
+                const ans = gameState.answers[i];
+                if (i === gameState.currentCaseIndex) {
+                    btn.className = "py-1 text-[10px] font-bold rounded bg-teal-400 text-slate-950 shadow ring-1 ring-white";
+                } else if (ans !== null) {
+                    btn.className = "py-1 text-[10px] font-bold rounded bg-indigo-900 text-indigo-200 border border-indigo-700";
+                } else {
+                    btn.className = "py-1 text-[10px] font-bold rounded border border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-800";
+                }
+            }
+        }
+
+        function navCase(dir) {
+            const newIdx = gameState.currentCaseIndex + dir;
+            if (newIdx >= 0 && newIdx < 50) {
+                loadCase(newIdx);
+            }
+        }
+
+        function finishSimulation() {
+            recalculateMetrics();
+
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-summary').classList.remove('hidden');
+
+            document.getElementById('final-score').innerText = gameState.score.toLocaleString();
+            document.getElementById('final-pct').innerText = `${gameState.matchPct}%`;
+
+            let roleReached = "Staff Nurse (Phase 1)";
+            if (gameState.matchPct >= 80) roleReached = "Executive Head Nurse / JCI Lead Educator (Phase 4)";
+            else if (gameState.matchPct >= 60) roleReached = "Charge Nurse / Critical Care Shift Lead (Phase 3)";
+            else if (gameState.matchPct >= 40) roleReached = "Certified Clinical Specialist (Phase 2)";
+
+            document.getElementById('final-role-reached').innerText = roleReached;
+
+            document.getElementById('cert-name').innerText = gameState.userName;
+            document.getElementById('cert-target').innerText = gameState.targetRole;
+            document.getElementById('cert-achieved').innerText = roleReached;
+            document.getElementById('cert-date').innerText = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            document.getElementById('cert-score-lang').innerText = `${gameState.domainScores.lang}%`;
+            document.getElementById('cert-score-clin').innerText = `${gameState.domainScores.clin}%`;
+            document.getElementById('cert-score-lead').innerText = `${gameState.domainScores.lead}%`;
+            document.getElementById('cert-score-mgmt').innerText = `${gameState.domainScores.mgmt}%`;
+
+            const recoList = document.getElementById('cert-recommendations');
+            recoList.innerHTML = '';
+
+            const recs = [
+                "Maintain conversational & medical Arabic fluency for rapid patient/family de-escalation (Phase 1 Baseline).",
+                "Ensure Primary Source Verification (DataFlow) & accredited BLS/ACLS credentials are active prior to migration.",
+                "Target certified specialty credentials (ICU/Dialysis) & Prometric Specialist rating in Years 2-3 (Phase 2).",
+                "Master standardized dual-language SBAR bedside handovers & non-punitive RCA leadership (Phase 3).",
+                "Develop Gibbs' reflective portfolios to support executive promotion to Head Nurse & JCI Quality Auditor (Phase 4)."
+            ];
+
+            recs.forEach(r => {
+                const li = document.createElement('li');
+                li.innerText = r;
+                recoList.appendChild(li);
+            });
+        }
+
+        function resetGame() {
+            gameState.answers = new Array(50).fill(null);
+            gameState.score = 0;
+            gameState.matchPct = 0;
+            balanceAnswerKeys();
+            recalculateMetrics();
+
+            document.getElementById('screen-summary').classList.add('hidden');
+            document.getElementById('screen-setup').classList.remove('hidden');
+        }
+
+        function toggleAudio() {
+            audioFx.muted = !audioFx.muted;
+            const icon = document.getElementById('audio-icon');
+            if (audioFx.muted) {
+                icon.className = "fa-solid fa-volume-xmark text-rose-400";
+            } else {
+                icon.className = "fa-solid fa-volume-high text-teal-400";
+            }
+        }
+    </script>
+</body>
+</html>
